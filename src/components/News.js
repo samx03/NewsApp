@@ -35,6 +35,7 @@ export default class News extends Component {
   }
 
   async updateNews() {
+    this.props.setProgress(10);
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eed3e87a3e12452f9bf3a218d75cb8e6&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({
       loading: true
@@ -43,6 +44,7 @@ export default class News extends Component {
     let parsedData = await data.json();
     console.log(parsedData);
     this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false })
+    this.props.setProgress(100);
   }
 
   async componentDidMount() {
@@ -58,7 +60,7 @@ export default class News extends Component {
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({ articles: this.state.articles.concat(parsedData.articles), totalResults: parsedData.totalResults})
+    this.setState({ articles: this.state.articles.concat(parsedData.articles), totalResults: parsedData.totalResults })
   };
 
 
@@ -72,7 +74,7 @@ export default class News extends Component {
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
           hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={<Spinner/>}
+          loader={<Spinner />}
         >
           <div className="container">
             <div className="row">
